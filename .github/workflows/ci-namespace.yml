@@ -104,7 +104,7 @@ jobs:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
         with:
-          cache: node
+          path: ~/.npm
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -126,7 +126,7 @@ jobs:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
         with:
-          cache: node
+          path: ~/.npm
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -145,7 +145,7 @@ jobs:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
         with:
-          cache: node
+          path: ~/.npm
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -166,10 +166,9 @@ jobs:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
         with:
-          cache: node
-      - uses: namespacelabs/nscloud-cache-action@v1
-        with:
-          path: ~/.cache/ms-playwright
+          path: |
+            ~/.npm
+            ~/.cache/ms-playwright
       - uses: actions/setup-node@v4
         with:
           node-version: 20
