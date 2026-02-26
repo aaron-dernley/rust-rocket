@@ -10,7 +10,7 @@ on:
 jobs:
   rust-check:
     name: Rust — fmt + clippy
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -28,7 +28,7 @@ jobs:
 
   rust-test:
     name: Rust — test
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -43,7 +43,7 @@ jobs:
 
   rust-build:
     name: Rust — release build
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -58,7 +58,7 @@ jobs:
 
   rust-audit:
     name: Rust — security audit
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     continue-on-error: true
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
@@ -75,7 +75,7 @@ jobs:
 
   rust-coverage:
     name: Rust — coverage
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -99,7 +99,7 @@ jobs:
 
   frontend-lint:
     name: Frontend — lint + typecheck
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -121,7 +121,7 @@ jobs:
 
   frontend-test:
     name: Frontend — unit tests
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -140,7 +140,7 @@ jobs:
 
   frontend-build:
     name: Frontend — Next.js build
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -161,7 +161,7 @@ jobs:
 
   frontend-e2e:
     name: Frontend — E2E tests
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-cache-action@v1
@@ -191,7 +191,7 @@ jobs:
 
   docker-build:
     name: Docker — remote build
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     needs: [rust-build, frontend-build]
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
@@ -204,7 +204,7 @@ jobs:
 
   docker-scan:
     name: Docker — Trivy security scan
-    runs-on: namespace-profile-default
+    runs-on: namespace-profile-aarons-test
     steps:
       - uses: namespacelabs/nscloud-checkout-action@v8
       - uses: namespacelabs/nscloud-setup-buildx-action@v0
