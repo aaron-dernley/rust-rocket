@@ -1,0 +1,130 @@
+name: CI Namespace (Optimised)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  rust-check:
+    name: Rust — fmt + clippy
+    runs-on: namespace-profile-default
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          cache: rust
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: cargo fmt
+        run: cargo fmt --check
+        working-directory: backend
+      - name: cargo clippy
+        run: cargo clippy -- -D warnings
+        working-directory: backend
+
+  rust-test:
+    name: Rust — test
+    runs-on: namespace-profile-default
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          cache: rust
+      - uses: dtolnay/rust-toolchain@stable
+      - name: cargo test
+        run: cargo test
+        working-directory: backend
+
+  rust-build:
+    name: Rust — release build
+    runs-on: namespace-profile-default
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          cache: rust
+      - name: Install system deps
+        run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - name: cargo build --release
+        run: cargo build --release
+        working-directory: backend
+
+  frontend-lint:
+    name: Frontend — lint + typecheck
+    runs-on: namespace-profile-default
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          cache: node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: false
+      - name: npm ci
+        run: npm ci
+        working-directory: frontend
+      - name: eslint
+        run: npx eslint .
+        working-directory: frontend
+      - name: tsc
+        run: npx tsc --noEmit
+        working-directory: frontend
+
+  frontend-test:
+    name: Frontend — unit tests
+    runs-on: namespace-profile-default
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          cache: node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: false
+      - name: npm ci
+        run: npm ci
+        working-directory: frontend
+      - name: vitest
+        run: npm test
+        working-directory: frontend
+
+  frontend-build:
+    name: Frontend — Next.js build
+    runs-on: namespace-profile-default
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-cache-action@v1
+        with:
+          cache: node
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: false
+      - name: npm ci
+        run: npm ci
+        working-directory: frontend
+      - name: next build
+        run: npm run build
+        working-directory: frontend
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3001
+
+  docker-build:
+    name: Docker — remote build
+    runs-on: namespace-profile-default
+    needs: [rust-build, frontend-build]
+    steps:
+      - uses: namespacelabs/nscloud-checkout-action@v8
+      - uses: namespacelabs/nscloud-setup-buildx-action@v0
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: rust-rocket:optimised

@@ -1,0 +1,33 @@
+{
+  "name": "rust-rocket",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "next": "14.2.29",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/react": "^18",
+    "@types/node": "^20",
+    "tailwindcss": "^3",
+    "postcss": "^8",
+    "autoprefixer": "^10",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.29",
+    "vitest": "^1",
+    "@vitejs/plugin-react": "^4",
+    "@testing-library/react": "^14",
+    "@testing-library/dom": "^9",
+    "jsdom": "^24",
+    "vite-tsconfig-paths": "^4"
+  }
+}
