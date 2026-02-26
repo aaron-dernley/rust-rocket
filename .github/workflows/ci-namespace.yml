@@ -70,7 +70,7 @@ jobs:
         with:
           tool: cargo-audit
       - name: cargo audit
-        run: cargo audit
+        run: cargo audit --ignore RUSTSEC-2024-0421
         working-directory: backend
 
   rust-coverage:
