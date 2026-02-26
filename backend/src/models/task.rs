@@ -20,7 +20,11 @@ pub struct Task {
 #[derive(Debug, Deserialize, Validate)]
 #[serde(rename_all = "camelCase")]
 pub struct CreateTaskRequest {
-    #[validate(length(min = 1, max = 255, message = "Title must be between 1 and 255 characters"))]
+    #[validate(length(
+        min = 1,
+        max = 255,
+        message = "Title must be between 1 and 255 characters"
+    ))]
     pub title: String,
     pub description: Option<String>,
 }
@@ -28,7 +32,11 @@ pub struct CreateTaskRequest {
 #[derive(Debug, Deserialize, Validate)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateTaskRequest {
-    #[validate(length(min = 1, max = 255, message = "Title must be between 1 and 255 characters"))]
+    #[validate(length(
+        min = 1,
+        max = 255,
+        message = "Title must be between 1 and 255 characters"
+    ))]
     pub title: Option<String>,
     pub description: Option<String>,
     pub completed: Option<bool>,

@@ -49,7 +49,5 @@ async fn main() {
 
     tracing::info!("listening on 0.0.0.0:3001");
 
-    axum::serve(listener, app)
-        .await
-        .expect("server error");
+    axum::serve(listener, app).await.expect("server error");
 }

@@ -29,9 +29,7 @@ impl<E: Into<anyhow::Error>> From<E> for AppError {
     }
 }
 
-pub async fn list_tasks(
-    State(state): State<Arc<AppState>>,
-) -> Result<Json<Vec<Task>>, AppError> {
+pub async fn list_tasks(State(state): State<Arc<AppState>>) -> Result<Json<Vec<Task>>, AppError> {
     let tasks = state.tasks.lock().await;
     let mut task_list: Vec<Task> = tasks.values().cloned().collect();
     task_list.sort_by(|a, b| a.created_at.cmp(&b.created_at));
@@ -42,9 +40,7 @@ pub async fn create_task(
     State(state): State<Arc<AppState>>,
     Json(payload): Json<CreateTaskRequest>,
 ) -> Result<(StatusCode, Json<Task>), AppError> {
-    payload
-        .validate()
-        .map_err(|e| AppError(anyhow!("{}", e)))?;
+    payload.validate().map_err(|e| AppError(anyhow!("{}", e)))?;
 
     let now = Utc::now();
     let task = Task {
@@ -79,9 +75,7 @@ pub async fn update_task(
     Path(id): Path<Uuid>,
     Json(payload): Json<UpdateTaskRequest>,
 ) -> Result<Json<Task>, AppError> {
-    payload
-        .validate()
-        .map_err(|e| AppError(anyhow!("{}", e)))?;
+    payload.validate().map_err(|e| AppError(anyhow!("{}", e)))?;
 
     let mut tasks = state.tasks.lock().await;
     let task = tasks
